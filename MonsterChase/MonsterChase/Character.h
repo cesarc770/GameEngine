@@ -14,6 +14,12 @@ public:
 	void setPositionY(int y);
 	int getPositionY();
 
+	//move character
+	void moveUp();
+	void moveDown(int edge);
+	void moveRight(int edge);
+	void moveLeft();
+
 private:
 	char* name;
 	int positionX;

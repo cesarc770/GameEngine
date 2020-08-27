@@ -5,11 +5,12 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <conio.h>
 #include "Character.h"
 #include "Monster.h"
 #include "Player.h"
 
-const int GRID_SIZE = 4;
+const int GRID_SIZE = 8;
 enum class GridTypes {None, PlayerCharacter, MonsterCharacter};
 int monsterNum;
 int Grid[GRID_SIZE][GRID_SIZE] = {};
@@ -18,6 +19,8 @@ Player player;
 
 void RunGame();
 bool placeCharacter(Character &character, GridTypes gridType);
+void updatePlayerMovement(int input);
+void printPlayerPosition(int input);
 
 	int main()
 	{
@@ -80,25 +83,25 @@ bool placeCharacter(Character &character, GridTypes gridType);
 
 
 		//begin game - start game loop
-		//while userinput not q and player is not dead
+		//while userinput not q and maybe player is not dead
 
 		char userInput = '.';
 			
+		std::cout << " Begin Game: press w a s d keys to move player or q to quit" << std::endl;
 		while (userInput != 'q')
 		{
-			//show menu options and take input from user
-			std::cout << " >> ";
-			std::cin >> userInput;
-		}
-
+			
+			userInput = getch();
 			//player can move with input - maybe arrows idk yet
+			updatePlayerMovement((int)userInput);
 
 			//monsters move randomly in grid
 			//if monsters collide with each other destroy both monsters
 			//if monster collides with player - player is hurt or dies
 			//if no monsters collide for 3 seconds create another monster
+		}
 			
-
+		std::cout << " Ending Game: Thanks for playing..." << std::endl;
 	}
 
 	bool placeCharacter(Character &character, GridTypes gridType)
@@ -119,10 +122,55 @@ bool placeCharacter(Character &character, GridTypes gridType);
 			
 				character.setPositionX(x);
 				character.setPositionY(y);
+				std::cout << x << " " << y << std::endl;
 				isPlaced = true;
 			}
 
 		}
 
 		return isPlaced;
+	}
+
+	void updatePlayerMovement(int input)
+	{
+		//validate that is an existing grid
+
+		switch (input)
+		{
+			//arrow up
+			case 119:
+				player.moveUp();
+				break;
+			//arrow down
+			case 115:
+				player.moveDown(GRID_SIZE);
+				break;
+			//arrow right
+			case 100:
+				player.moveRight(GRID_SIZE);
+				break;
+			//arrow left
+			case 97:
+				player.moveLeft();
+				break;
+			default:
+				//std::cout << input << std::endl;
+				break;
+		}
+
+		printPlayerPosition(input);
+	}
+
+	void printPlayerPosition(int input)
+	{
+		switch (input)
+		{
+		case 115:
+		case 119:
+		case 97:
+		case 100:
+			printf("%s : [%d , %d]\n", player.getName(), player.getPositionX(), player.getPositionY());
+		default:
+			break;
+		}
 	}

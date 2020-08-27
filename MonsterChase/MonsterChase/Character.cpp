@@ -44,6 +44,38 @@ int Character::getPositionY()
 	return positionY;
 }
 
+void Character::moveUp()
+{
+	//safe guard
+	if (positionX - 1 < 0) return;
+
+	positionX--;
+}
+
+void Character::moveDown(int edge)
+{
+	//safe guard
+	if (positionX + 1 >= edge) return;
+
+	positionX++;
+}
+
+void Character::moveRight(int edge)
+{
+	//safe guard
+	if (positionY + 1 >= edge) return;
+
+	positionY++;
+}
+
+void Character::moveLeft()
+{
+	//safe guard
+	if (positionY - 1 < 0) return;
+
+	positionY--;
+}
+
 void Character::setName(char* n)
 {
 	name = n;
