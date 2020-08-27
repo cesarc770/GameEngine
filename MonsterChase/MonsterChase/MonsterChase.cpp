@@ -21,7 +21,6 @@ bool placeCharacter(Character &character, GridTypes gridType);
 
 	int main()
 	{
-		//create 2D Grid - SQUARE
 		RunGame();
 
 		return 0;
@@ -29,13 +28,16 @@ bool placeCharacter(Character &character, GridTypes gridType);
 
 	void RunGame()
 	{
-		//welcome user and ask for name
-		std::cout << "WELCOME TO MONSTER CHASE!!!" << "\n"
-			<< "---------------------------\n\n" 
-			<< " Enter your name: " << std::endl;
 
 		char name[64];
+
+
+		//welcome user and ask for name
+		std::cout << "WELCOME TO MONSTER CHASE!!!" << "\n"
+			<< "---------------------------\n\n"
+			<< " Enter your name: ";
 		std::cin >> name;
+		std::cout << "\n";
 
 		player = Player();
 		player.setName(name);
@@ -44,7 +46,7 @@ bool placeCharacter(Character &character, GridTypes gridType);
 		placeCharacter(player, GridTypes::PlayerCharacter);
 
 		//query user for number of monsters
-		printf("Enter number of monsters to create (Number must be between 1 and %1d ) \n", GRID_SIZE / 2);
+		printf("Enter number of monsters to create (Number must be between 1 and %1d ) ", GRID_SIZE / 2);
 		scanf_s("%d", &monsterNum);
 
 		//validate monsterNum
@@ -54,7 +56,7 @@ bool placeCharacter(Character &character, GridTypes gridType);
 		if (monsterNum > (GRID_SIZE / 2))
 			monsterNum = GRID_SIZE / 2;
 
-		printf("%d Monster(s) is/are being created...\n", monsterNum);
+		printf("\n%d Monster(s) is/are being created...\n", monsterNum);
 
 		//create array of monsters with that length
 		for (int i = 0; i < monsterNum; i++)
@@ -74,6 +76,7 @@ bool placeCharacter(Character &character, GridTypes gridType);
 			monsters[i] = newMonster;
 
 		}
+		printf("\n%d Monster(s) is/are have been placed...\n", monsterNum);
 
 
 		//begin game - start game loop
