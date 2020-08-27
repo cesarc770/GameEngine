@@ -4,21 +4,24 @@
 
 #include <iostream>
 #include <stdio.h>
+#include <stdlib.h>
 #include "Character.h"
 #include "Monster.h"
 #include "Player.h"
 
-const int GRID_SIZE = 50;
+const int GRID_SIZE = 4;
+enum class GridTypes {None, PlayerCharacter, MonsterCharacter};
 int monsterNum;
+int Grid[GRID_SIZE][GRID_SIZE] = {};
 Monster monsters[GRID_SIZE / 2] = {};
 Player player;
 
 void RunGame();
+bool placeCharacter(Character &character, GridTypes gridType);
 
 	int main()
 	{
 		//create 2D Grid - SQUARE
-		//Character Grid[GRID_SIZE][GRID_SIZE] = {};
 		RunGame();
 
 		return 0;
@@ -37,6 +40,9 @@ void RunGame();
 		player = Player();
 		player.setName(name);
 
+		//place player in random position
+		placeCharacter(player, GridTypes::PlayerCharacter);
+
 		//query user for number of monsters
 		printf("Enter number of monsters to create (Number must be between 1 and %1d ) \n", GRID_SIZE / 2);
 		scanf_s("%d", &monsterNum);
@@ -53,6 +59,8 @@ void RunGame();
 		//create array of monsters with that length
 		for (int i = 0; i < monsterNum; i++)
 		{
+			bool isPlaced = false;
+
 			char name[64];
 			//for each monster ask user for name and assign to monster
 			Monster newMonster = Monster();
@@ -60,17 +68,58 @@ void RunGame();
 			std::cin >> name;
 
 			newMonster.setName(name);
-
+			
+			//place monster in grid in random position 
+			placeCharacter(newMonster, GridTypes::MonsterCharacter);
 			monsters[i] = newMonster;
+
 		}
 
 
 		//begin game - start game loop
 		//while userinput not q and player is not dead
+
+		char userInput = '.';
+			
+		while (userInput != 'q')
+		{
+			//show menu options and take input from user
+			std::cout << " >> ";
+			std::cin >> userInput;
+		}
+
+			//player can move with input - maybe arrows idk yet
+
 			//monsters move randomly in grid
 			//if monsters collide with each other destroy both monsters
 			//if monster collides with player - player is hurt or dies
 			//if no monsters collide for 3 seconds create another monster
-			//player can move with input - maybe arrows idk yet
+			
 
+	}
+
+	bool placeCharacter(Character &character, GridTypes gridType)
+	{
+		bool isPlaced = false;
+		while (!isPlaced)
+		{
+			int x = rand() % GRID_SIZE;
+			int y = rand() % GRID_SIZE;
+
+			//check if occupied in grid
+
+			if (Grid[x][y] == NULL || Grid[x][y] == (int)GridTypes::None)
+			{
+				//std::cout << x << " " << y << "is null";
+				
+				Grid[x][y] = (int)gridType;
+			
+				character.setPositionX(x);
+				character.setPositionY(y);
+				isPlaced = true;
+			}
+
+		}
+
+		return isPlaced;
 	}

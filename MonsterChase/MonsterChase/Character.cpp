@@ -24,6 +24,26 @@ char* Character::getName()
 	return name;
 }
 
+void Character::setPositionX(int x)
+{
+	positionX = x;
+}
+
+int Character::getPositionX()
+{
+	return positionX;
+}
+
+void Character::setPositionY(int y)
+{
+	positionY = y;
+}
+
+int Character::getPositionY()
+{
+	return positionY;
+}
+
 void Character::setName(char* n)
 {
 	name = n;

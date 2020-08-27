@@ -9,11 +9,14 @@ public:
 	//getters and setters
 	void setName(char *n);
 	char* getName();
-
-	int positionX;
-	int positionY;
+	void setPositionX(int x);
+	int getPositionX();
+	void setPositionY(int y);
+	int getPositionY();
 
 private:
 	char* name;
+	int positionX;
+	int positionY;
 };
 
