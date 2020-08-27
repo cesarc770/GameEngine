@@ -20,7 +20,9 @@ Player player;
 void RunGame();
 bool placeCharacter(Character &character, GridTypes gridType);
 void updatePlayerMovement(int input);
-void printPlayerPosition(int input);
+bool isInputValid(int input);
+void updateMovement(int input);
+void updateMonstersMove();
 
 	int main()
 	{
@@ -66,13 +68,14 @@ void printPlayerPosition(int input);
 		{
 			bool isPlaced = false;
 
-			char name[64];
+			char* name = new char[64]();
 			//for each monster ask user for name and assign to monster
 			Monster newMonster = Monster();
 			std::cout << "Enter Monster " << i + 1 << " name: ";
 			std::cin >> name;
 
 			newMonster.setName(name);
+			
 			
 			//place monster in grid in random position 
 			placeCharacter(newMonster, GridTypes::MonsterCharacter);
@@ -93,9 +96,9 @@ void printPlayerPosition(int input);
 			
 			userInput = getch();
 			//player can move with input - maybe arrows idk yet
-			updatePlayerMovement((int)userInput);
-
 			//monsters move randomly in grid
+			updateMovement(userInput);
+
 			//if monsters collide with each other destroy both monsters
 			//if monster collides with player - player is hurt or dies
 			//if no monsters collide for 3 seconds create another monster
@@ -116,19 +119,23 @@ void printPlayerPosition(int input);
 
 			if (Grid[x][y] == NULL || Grid[x][y] == (int)GridTypes::None)
 			{
-				//std::cout << x << " " << y << "is null";
-				
 				Grid[x][y] = (int)gridType;
 			
 				character.setPositionX(x);
 				character.setPositionY(y);
-				std::cout << x << " " << y << std::endl;
 				isPlaced = true;
 			}
 
 		}
 
 		return isPlaced;
+	}
+	
+	void updateMovement(int input)
+	{
+		if (!isInputValid(input)) return;
+		updatePlayerMovement(input);
+		updateMonstersMove();
 	}
 
 	void updatePlayerMovement(int input)
@@ -154,14 +161,13 @@ void printPlayerPosition(int input);
 				player.moveLeft();
 				break;
 			default:
-				//std::cout << input << std::endl;
 				break;
 		}
 
-		printPlayerPosition(input);
+		printf("%s : [%d , %d]\n", player.getName(), player.getPositionX(), player.getPositionY());
 	}
 
-	void printPlayerPosition(int input)
+	bool isInputValid(int input)
 	{
 		switch (input)
 		{
@@ -169,8 +175,18 @@ void printPlayerPosition(int input);
 		case 119:
 		case 97:
 		case 100:
-			printf("%s : [%d , %d]\n", player.getName(), player.getPositionX(), player.getPositionY());
+			return true;
 		default:
-			break;
+			return false;
+		}
+	}
+
+
+	void updateMonstersMove()
+	{
+		for (int i = 0; i < monsterNum; i++)
+		{
+			monsters[i].moveRandomly(GRID_SIZE);
+			printf("%s : [%d , %d]\n", monsters[i].getName(), monsters[i].getPositionX(), monsters[i].getPositionY());
 		}
 	}

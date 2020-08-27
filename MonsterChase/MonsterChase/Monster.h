@@ -7,5 +7,6 @@ class Monster : public Character
 public:
 	Monster();
 	Monster(int x, int y);
+	void moveRandomly(int bound);
 };
 
