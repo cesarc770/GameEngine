@@ -7,6 +7,8 @@ class Monster : public Character
 public:
 	Monster();
 	Monster(int x, int y);
-	void moveRandomly(int bound);
+	void moveRandomly();
+
+	bool collidedInTUrn = false;
 };
 

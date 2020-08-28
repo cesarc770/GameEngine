@@ -11,7 +11,7 @@ Monster::Monster(int x, int y)
 	Character(x, y);
 }
 
-void Monster::moveRandomly(int bound)
+void Monster::moveRandomly()
 {
 	int random = rand() % 4;
 
@@ -21,13 +21,13 @@ void Monster::moveRandomly(int bound)
 		moveUp();
 		break;
 	case 1:
-		moveDown(bound);
+		moveDown();
 		break;
 	case 2:
 		moveLeft();
 		break;
 	case 3:
-		moveRight(bound);
+		moveRight();
 		break;
 	default:
 		moveUp();

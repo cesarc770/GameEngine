@@ -16,8 +16,8 @@ public:
 
 	//move character
 	void moveUp();
-	void moveDown(int edge);
-	void moveRight(int edge);
+	void moveDown();
+	void moveRight();
 	void moveLeft();
 
 private:

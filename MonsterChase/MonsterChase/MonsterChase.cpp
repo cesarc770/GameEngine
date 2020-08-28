@@ -10,19 +10,23 @@
 #include "Monster.h"
 #include "Player.h"
 
-const int GRID_SIZE = 8;
-enum class GridTypes {None, PlayerCharacter, MonsterCharacter};
+//const int GRID_SIZE = 8;
+//enum class GridTypes {None, PlayerCharacter, MonsterCharacter};
 int monsterNum;
-int Grid[GRID_SIZE][GRID_SIZE] = {};
-Monster monsters[GRID_SIZE / 2] = {};
+//int Grid[GRID_SIZE][GRID_SIZE] = {};
 Player player;
+char NewName[] = "NewBabyMonster";
 
 void RunGame();
-bool placeCharacter(Character &character, GridTypes gridType);
-void updatePlayerMovement(int input);
+void placeCharacter(Character &character);
+void updatePlayerMovement(int input, Monster* monsters);
+bool checkCollision(Character& character, Monster* monsters, int index);
 bool isInputValid(int input);
-void updateMovement(int input);
-void updateMonstersMove();
+Monster* updateMovement(int input, Monster *monsters);
+Monster* updateMonstersMove(Monster *monsters);
+bool checkMonsterCollision(Monster& character, Monster* monsters, int index);
+Monster* addToArray(Monster* arr);
+
 
 	int main()
 	{
@@ -37,10 +41,45 @@ void updateMonstersMove();
 		char name[64];
 
 
-		//welcome user and ask for name
+		//welcome user
 		std::cout << "WELCOME TO MONSTER CHASE!!!" << "\n"
-			<< "---------------------------\n\n"
-			<< " Enter your name: ";
+			<< "---------------------------\n\n";
+
+		//query user for number of monsters
+		printf("Enter number of monsters to create: ");
+		scanf_s("%d", &monsterNum);
+
+		//validate monsterNum
+		if (monsterNum <= 0)
+			monsterNum = 1;
+
+
+		Monster* monsters = new Monster[monsterNum];
+
+		//printf("\n%d Monster(s) is/are being created...\n", monsterNum);
+
+		//create array of monsters with that length
+		for (int i = 0; i < monsterNum; i++)
+		{
+
+			char* name = new char[64]();
+			//for each monster ask user for name and assign to monster
+			Monster newMonster = Monster();
+			std::cout << "Enter Monster " << i + 1 << " name:";
+			std::cin >> name;
+
+			newMonster.setName(name);
+			
+			
+			//place monster in grid in random position 
+			placeCharacter(newMonster);
+			monsters[i] = newMonster;
+
+		}
+		//printf("\n%d Monster(s) is/are have been placed...\n\n", monsterNum);
+
+		//ask user for name
+		std::cout << "Enter your name: ";
 		std::cin >> name;
 		std::cout << "\n";
 
@@ -48,97 +87,51 @@ void updateMonstersMove();
 		player.setName(name);
 
 		//place player in random position
-		placeCharacter(player, GridTypes::PlayerCharacter);
-
-		//query user for number of monsters
-		printf("Enter number of monsters to create (Number must be between 1 and %1d ) ", GRID_SIZE / 2);
-		scanf_s("%d", &monsterNum);
-
-		//validate monsterNum
-		//monsters should be less than grid squares - i need places to put them
-		if (monsterNum <= 0)
-			monsterNum = 1;
-		if (monsterNum > (GRID_SIZE / 2))
-			monsterNum = GRID_SIZE / 2;
-
-		printf("\n%d Monster(s) is/are being created...\n", monsterNum);
-
-		//create array of monsters with that length
-		for (int i = 0; i < monsterNum; i++)
-		{
-			bool isPlaced = false;
-
-			char* name = new char[64]();
-			//for each monster ask user for name and assign to monster
-			Monster newMonster = Monster();
-			std::cout << "Enter Monster " << i + 1 << " name: ";
-			std::cin >> name;
-
-			newMonster.setName(name);
-			
-			
-			//place monster in grid in random position 
-			placeCharacter(newMonster, GridTypes::MonsterCharacter);
-			monsters[i] = newMonster;
-
-		}
-		printf("\n%d Monster(s) is/are have been placed...\n", monsterNum);
+		placeCharacter(player);
 
 
 		//begin game - start game loop
 		//while userinput not q and maybe player is not dead
 
 		char userInput = '.';
-			
-		std::cout << " Begin Game: press w a s d keys to move player or q to quit" << std::endl;
+		
+		//std::cout << "\nBeign game: Press w to go Up , a to go Left, s to go Down and d to go Right or q to quit\n" << std::endl;
 		while (userInput != 'q')
 		{
-			
+			std::cout << "\nPress w to go Up , a to go Left, s to go Down and d to go Right or q to quit\n" << std::endl;
 			userInput = getch();
-			//player can move with input - maybe arrows idk yet
-			//monsters move randomly in grid
-			updateMovement(userInput);
 
-			//if monsters collide with each other destroy both monsters
-			//if monster collides with player - player is hurt or dies
-			//if no monsters collide for 3 seconds create another monster
+			//if monsters collide with each other they have a baby
+			//if monster collides with player - monster is killed
+			monsters = updateMovement(userInput, monsters);
 		}
 			
 		std::cout << " Ending Game: Thanks for playing..." << std::endl;
 	}
 
-	bool placeCharacter(Character &character, GridTypes gridType)
+	void placeCharacter(Character &character)
 	{
-		bool isPlaced = false;
-		while (!isPlaced)
-		{
-			int x = rand() % GRID_SIZE;
-			int y = rand() % GRID_SIZE;
 
-			//check if occupied in grid
+			int x = rand() % 100 -50;
+			int y = rand() % 100 -50;
+			character.setPositionX(x);
+			character.setPositionY(y);
 
-			if (Grid[x][y] == NULL || Grid[x][y] == (int)GridTypes::None)
-			{
-				Grid[x][y] = (int)gridType;
-			
-				character.setPositionX(x);
-				character.setPositionY(y);
-				isPlaced = true;
-			}
-
-		}
-
-		return isPlaced;
 	}
 	
-	void updateMovement(int input)
+	Monster* updateMovement(int input, Monster *monsters)
 	{
-		if (!isInputValid(input)) return;
-		updatePlayerMovement(input);
-		updateMonstersMove();
+		if(isInputValid(input))
+		{
+			updatePlayerMovement(input, monsters);
+			monsters = updateMonstersMove(monsters);
+		}
+
+		return monsters;
+		
 	}
 
-	void updatePlayerMovement(int input)
+	void updatePlayerMovement(int input, Monster *monsters)
 	{
 		//validate that is an existing grid
 
@@ -150,11 +143,11 @@ void updateMonstersMove();
 				break;
 			//arrow down
 			case 115:
-				player.moveDown(GRID_SIZE);
+				player.moveDown();
 				break;
 			//arrow right
 			case 100:
-				player.moveRight(GRID_SIZE);
+				player.moveRight();
 				break;
 			//arrow left
 			case 97:
@@ -164,6 +157,13 @@ void updateMonstersMove();
 				break;
 		}
 
+		//check is player collides with a monster
+		if (checkCollision(player, monsters, monsterNum))
+		{
+			std::cout << "Player collsion" << std::endl;
+		}
+
+		std::cout << "Player:\n";
 		printf("%s : [%d , %d]\n", player.getName(), player.getPositionX(), player.getPositionY());
 	}
 
@@ -182,11 +182,85 @@ void updateMonstersMove();
 	}
 
 
-	void updateMonstersMove()
+	Monster* updateMonstersMove(Monster *monsters)
+	{
+		std::cout << "\nMonsters:\n";
+		for (int i = 0; i < monsterNum; i++)
+		{			
+			monsters[i].moveRandomly();
+			//check if monster collides with another monster
+			if (checkMonsterCollision(monsters[i], monsters, i))
+			{
+				//create baby monster
+				monsters = addToArray(monsters);
+			}
+			else
+			{
+				monsters[i].collidedInTUrn = false;
+			}
+
+			printf("%s : [%d , %d]\n", monsters[i].getName(), monsters[i].getPositionX(), monsters[i].getPositionY());
+		}
+
+		return monsters;
+	}
+
+	bool checkCollision(Character& character, Monster *monsters, int index)
 	{
 		for (int i = 0; i < monsterNum; i++)
 		{
-			monsters[i].moveRandomly(GRID_SIZE);
-			printf("%s : [%d , %d]\n", monsters[i].getName(), monsters[i].getPositionX(), monsters[i].getPositionY());
+			if (i != index)
+			{
+				if (character.getPositionX() == monsters[i].getPositionX() && character.getPositionY() == monsters[i].getPositionY())
+				{
+					return true;
+				}
+			}
 		}
+		
+		return false;
+	}
+
+
+
+	bool checkMonsterCollision(Monster& character, Monster* monsters, int index)
+	{
+		if (!character.collidedInTUrn)
+		{
+			for (int i = 0; i < monsterNum; i++)
+			{
+				if (i != index)
+				{
+					if (character.getPositionX() == monsters[i].getPositionX() && character.getPositionY() == monsters[i].getPositionY())
+					{
+						monsters[i].collidedInTUrn = true;
+						character.collidedInTUrn = true;
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	Monster* addToArray(Monster* arr)
+	{
+		monsterNum++;
+		Monster* temp = new Monster[monsterNum];
+		for (int i = 0; i < monsterNum - 1; i++)
+		{
+			temp[i] = arr[i];
+		}
+
+		char* ch = NewName;
+		Monster tempMonster = Monster();
+		tempMonster.setName(ch);
+
+
+		//place monster in grid in random position 
+		placeCharacter(tempMonster);
+		temp[monsterNum - 1] = tempMonster;
+
+		return temp;
 	}
