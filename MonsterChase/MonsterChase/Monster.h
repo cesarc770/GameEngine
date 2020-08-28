@@ -9,6 +9,6 @@ public:
 	Monster(int x, int y);
 	void moveRandomly();
 
-	bool collidedInTUrn = false;
+	bool collidedInTurn = false;
 };
 

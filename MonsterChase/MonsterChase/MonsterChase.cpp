@@ -19,12 +19,13 @@ char NewName[] = "NewBabyMonster";
 
 void RunGame();
 void placeCharacter(Character &character);
-void updatePlayerMovement(int input, Monster* monsters);
-bool checkCollision(Character& character, Monster* monsters, int index);
+Monster* updatePlayerMovement(int input, Monster* monsters);
+Monster* checkCollision(Character& character, Monster* monsters, int index);
 bool isInputValid(int input);
 Monster* updateMovement(int input, Monster *monsters);
 Monster* updateMonstersMove(Monster *monsters);
 bool checkMonsterCollision(Monster& character, Monster* monsters, int index);
+Monster* takeMonsterOutOfArray(Monster* arr, int index);
 Monster* addToArray(Monster* arr);
 
 
@@ -94,9 +95,9 @@ Monster* addToArray(Monster* arr);
 		//while userinput not q and maybe player is not dead
 
 		char userInput = '.';
+		bool allMonstersDead = false;
 		
-		//std::cout << "\nBeign game: Press w to go Up , a to go Left, s to go Down and d to go Right or q to quit\n" << std::endl;
-		while (userInput != 'q')
+		while (userInput != 'q' && !allMonstersDead)
 		{
 			std::cout << "\nPress w to go Up , a to go Left, s to go Down and d to go Right or q to quit\n" << std::endl;
 			userInput = getch();
@@ -104,8 +105,20 @@ Monster* addToArray(Monster* arr);
 			//if monsters collide with each other they have a baby
 			//if monster collides with player - monster is killed
 			monsters = updateMovement(userInput, monsters);
-		}
 			
+			//use this for testing
+			//takeMonsterOutOfArray(monsters, 1);
+
+			if (monsterNum == 0)
+			{
+				allMonstersDead = true;
+			}
+		}
+		
+		if (allMonstersDead)
+		{
+			std::cout << " You Won the game!... Thanks for playing" << std::endl;
+		}
 		std::cout << " Ending Game: Thanks for playing..." << std::endl;
 	}
 
@@ -123,7 +136,7 @@ Monster* addToArray(Monster* arr);
 	{
 		if(isInputValid(input))
 		{
-			updatePlayerMovement(input, monsters);
+			monsters = updatePlayerMovement(input, monsters);
 			monsters = updateMonstersMove(monsters);
 		}
 
@@ -131,7 +144,7 @@ Monster* addToArray(Monster* arr);
 		
 	}
 
-	void updatePlayerMovement(int input, Monster *monsters)
+	Monster* updatePlayerMovement(int input, Monster *monsters)
 	{
 		//validate that is an existing grid
 
@@ -158,13 +171,13 @@ Monster* addToArray(Monster* arr);
 		}
 
 		//check is player collides with a monster
-		if (checkCollision(player, monsters, monsterNum))
-		{
-			std::cout << "Player collsion" << std::endl;
-		}
+		monsters = checkCollision(player, monsters, monsterNum);
+
 
 		std::cout << "Player:\n";
 		printf("%s : [%d , %d]\n", player.getName(), player.getPositionX(), player.getPositionY());
+
+		return monsters;
 	}
 
 	bool isInputValid(int input)
@@ -196,7 +209,7 @@ Monster* addToArray(Monster* arr);
 			}
 			else
 			{
-				monsters[i].collidedInTUrn = false;
+				monsters[i].collidedInTurn = false;
 			}
 
 			printf("%s : [%d , %d]\n", monsters[i].getName(), monsters[i].getPositionX(), monsters[i].getPositionY());
@@ -205,7 +218,7 @@ Monster* addToArray(Monster* arr);
 		return monsters;
 	}
 
-	bool checkCollision(Character& character, Monster *monsters, int index)
+	Monster* checkCollision(Character& character, Monster *monsters, int index)
 	{
 		for (int i = 0; i < monsterNum; i++)
 		{
@@ -213,19 +226,20 @@ Monster* addToArray(Monster* arr);
 			{
 				if (character.getPositionX() == monsters[i].getPositionX() && character.getPositionY() == monsters[i].getPositionY())
 				{
-					return true;
+					//take monster out of array
+					monsters = takeMonsterOutOfArray(monsters, i);
 				}
 			}
 		}
 		
-		return false;
+		return monsters;
 	}
 
 
 
 	bool checkMonsterCollision(Monster& character, Monster* monsters, int index)
 	{
-		if (!character.collidedInTUrn)
+		if (!character.collidedInTurn)
 		{
 			for (int i = 0; i < monsterNum; i++)
 			{
@@ -233,8 +247,8 @@ Monster* addToArray(Monster* arr);
 				{
 					if (character.getPositionX() == monsters[i].getPositionX() && character.getPositionY() == monsters[i].getPositionY())
 					{
-						monsters[i].collidedInTUrn = true;
-						character.collidedInTUrn = true;
+						monsters[i].collidedInTurn = true;
+						character.collidedInTurn = true;
 						return true;
 					}
 				}
@@ -242,6 +256,32 @@ Monster* addToArray(Monster* arr);
 		}
 
 		return false;
+	}
+
+	Monster* takeMonsterOutOfArray(Monster* arr, int index)
+	{
+		if (monsterNum > 0)
+		{
+			// move elements from array to front
+			for (int i = index; i < monsterNum - 1; i++)
+			{
+				arr[i] = arr[i + 1];
+			}
+
+			//make new array and copy to new array
+			//change pointer
+
+			monsterNum--;
+			Monster* temp = new Monster[monsterNum];
+			for (int i = 0; i < monsterNum - 1; i++)
+			{
+				temp[i] = arr[i];
+			}
+
+			return temp;
+		}
+
+		return arr;
 	}
 
 	Monster* addToArray(Monster* arr)
