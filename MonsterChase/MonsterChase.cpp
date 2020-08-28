@@ -90,6 +90,15 @@ Monster* addToArray(Monster* arr);
 		//place player in random position
 		placeCharacter(player);
 
+		//print positions
+		std::cout << "\nPlayer:\n";
+		printf("%s : [%d , %d]\n", player.getName(), player.getPositionX(), player.getPositionY());
+
+		std::cout << "\nMonsters:\n";
+		for (int i = 0; i < monsterNum; i++)
+		{
+			printf("%s : [%d , %d]\n", monsters[i].getName(), monsters[i].getPositionX(), monsters[i].getPositionY());
+		}
 
 		//begin game - start game loop
 		//while userinput not q and maybe player is not dead
