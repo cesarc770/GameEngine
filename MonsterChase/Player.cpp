@@ -7,6 +7,6 @@ Player::Player()
 
 Player::Player(int x, int y)
 {
-	Point2D p = Point2D(x, y);
-	setPosition(p);
+	Point2D P(x, y);
+	setPosition(P);
 }
