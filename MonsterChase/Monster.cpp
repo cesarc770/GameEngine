@@ -3,12 +3,12 @@
 
 Monster::Monster()
 {
-	Character();
+	Engine::Character();
 }
 
 Monster::Monster(int x, int y)
 {
-	Character(x, y);
+	Engine::Character(x, y);
 }
 
 void Monster::moveRandomly()

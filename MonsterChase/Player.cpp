@@ -2,10 +2,10 @@
 
 Player::Player()
 {
-	Character();
+	Engine::Character();
 }
 
 Player::Player(int x, int y)
 {
-	Character(x, y);
+	Engine::Character(x, y);
 }

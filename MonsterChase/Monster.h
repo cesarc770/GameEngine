@@ -1,7 +1,7 @@
 #pragma once
-#include "Character.h"
+#include "Framework/Character.h"
 
-class Monster : public Character
+class Monster : public Engine::Character
 {
 
 public:

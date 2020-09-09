@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
-#include "Character.h"
+#include "Framework/Character.h"
 #include "Monster.h"
 #include "Player.h"
 
@@ -18,9 +18,9 @@ Player player;
 char NewName[] = "NewBabyMonster";
 
 void RunGame();
-void placeCharacter(Character &character);
+void placeCharacter(Engine::Character &character);
 Monster* updatePlayerMovement(int input, Monster* monsters);
-Monster* checkCollision(Character& character, Monster* monsters, int index);
+Monster* checkCollision(Engine::Character& character, Monster* monsters, int index);
 bool isInputValid(int input);
 Monster* updateMovement(int input, Monster *monsters);
 Monster* updateMonstersMove(Monster *monsters);
@@ -131,7 +131,7 @@ Monster* addToArray(Monster* arr);
 		std::cout << " Ending Game: Thanks for playing..." << std::endl;
 	}
 
-	void placeCharacter(Character &character)
+	void placeCharacter(Engine::Character &character)
 	{
 
 			int x = rand() % 100 -50;
@@ -227,7 +227,7 @@ Monster* addToArray(Monster* arr);
 		return monsters;
 	}
 
-	Monster* checkCollision(Character& character, Monster *monsters, int index)
+	Monster* checkCollision(Engine::Character& character, Monster *monsters, int index)
 	{
 		for (int i = 0; i < monsterNum; i++)
 		{

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Character.h"
+#include "Framework/Character.h"
 
-class Player : public Character
+class Player : public Engine::Character
 {
 public:
 	Player();
