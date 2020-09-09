@@ -10,15 +10,13 @@ namespace Engine
 	Character::Character()
 	{
 		name = nullptr;
-		positionX = 0;
-		positionY = 0;
+		position = Point2D();
 	}
 
-	Character::Character(int x, int y)
+	Character::Character(Point2D &pos)
 	{
 		name = nullptr;
-		positionX = x;
-		positionY = y;
+		position = pos;
 	}
 
 	char* Character::getName()
@@ -26,48 +24,40 @@ namespace Engine
 		return name;
 	}
 
-	void Character::setPositionX(int x)
+
+	Point2D Character::getPosition()
 	{
-		positionX = x;
+		return position;
 	}
 
-	int Character::getPositionX()
+	void Character::setPosition(Point2D &pos)
 	{
-		return positionX;
+		position = pos;
 	}
 
-	void Character::setPositionY(int y)
-	{
-		positionY = y;
-	}
-
-	int Character::getPositionY()
-	{
-		return positionY;
-	}
 
 	void Character::moveUp()
 	{
 
-		positionY--;
+		position.Y--;
 	}
 
 	void Character::moveDown()
 	{
 
-		positionY++;
+		position.Y++;
 	}
 
 	void Character::moveRight()
 	{
 
-		positionX++;
+		position.X++;
 	}
 
 	void Character::moveLeft()
 	{
 
-		positionX--;
+		position.X--;
 	}
 
 	void Character::setName(char* n)

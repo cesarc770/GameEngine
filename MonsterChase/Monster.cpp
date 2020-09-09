@@ -1,14 +1,15 @@
 #include "Monster.h"
+#include "Math/Point2D.h"
 #include <stdlib.h>
 
 Monster::Monster()
 {
-	Engine::Character();
 }
 
 Monster::Monster(int x, int y)
 {
-	Engine::Character(x, y);
+	Point2D p = Point2D(x, y);
+	setPosition(p);
 }
 
 void Monster::moveRandomly()

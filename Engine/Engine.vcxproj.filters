@@ -16,15 +16,24 @@
     <Filter Include="Source Files\Framework">
       <UniqueIdentifier>{2cd17460-e44d-4219-b04d-fd422c46845e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Math">
+      <UniqueIdentifier>{e1fcf14e-30fd-48e0-9bfd-844a641a73c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Character.cpp">
       <Filter>Source Files\Framework</Filter>
     </ClCompile>
+    <ClCompile Include="Math\Point2D.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Character.h">
       <Filter>Source Files\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Point2D.h">
+      <Filter>Source Files\Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

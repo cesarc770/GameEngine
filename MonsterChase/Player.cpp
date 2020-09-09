@@ -1,11 +1,12 @@
 #include "Player.h"
+#include "Math/Point2D.h"
 
 Player::Player()
 {
-	Engine::Character();
 }
 
 Player::Player(int x, int y)
 {
-	Engine::Character(x, y);
+	Point2D p = Point2D(x, y);
+	setPosition(p);
 }

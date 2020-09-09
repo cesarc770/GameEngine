@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <conio.h>
 #include "Framework/Character.h"
+#include "Math/Point2D.h"
 #include "Monster.h"
 #include "Player.h"
 
@@ -92,12 +93,12 @@ Monster* addToArray(Monster* arr);
 
 		//print positions
 		std::cout << "\nPlayer:\n";
-		printf("%s : [%d , %d]\n", player.getName(), player.getPositionX(), player.getPositionY());
+		printf("%s : [%d , %d]\n", player.getName(), player.getPosition().X, player.getPosition().Y);
 
 		std::cout << "\nMonsters:\n";
 		for (int i = 0; i < monsterNum; i++)
 		{
-			printf("%s : [%d , %d]\n", monsters[i].getName(), monsters[i].getPositionX(), monsters[i].getPositionY());
+			printf("%s : [%d , %d]\n", monsters[i].getName(), monsters[i].getPosition().X, monsters[i].getPosition().Y);
 		}
 
 		//begin game - start game loop
@@ -136,8 +137,8 @@ Monster* addToArray(Monster* arr);
 
 			int x = rand() % 100 -50;
 			int y = rand() % 100 -50;
-			character.setPositionX(x);
-			character.setPositionY(y);
+			Point2D newPos = Point2D(x, y);
+			character.setPosition(newPos);
 
 	}
 	
@@ -184,7 +185,7 @@ Monster* addToArray(Monster* arr);
 
 
 		std::cout << "Player:\n";
-		printf("%s : [%d , %d]\n", player.getName(), player.getPositionX(), player.getPositionY());
+		printf("%s : [%d , %d]\n", player.getName(), player.getPosition().X, player.getPosition().Y);
 
 		return monsters;
 	}
@@ -221,7 +222,7 @@ Monster* addToArray(Monster* arr);
 				monsters[i].collidedInTurn = false;
 			}
 
-			printf("%s : [%d , %d]\n", monsters[i].getName(), monsters[i].getPositionX(), monsters[i].getPositionY());
+			printf("%s : [%d , %d]\n", monsters[i].getName(), monsters[i].getPosition().X, monsters[i].getPosition().Y);
 		}
 
 		return monsters;
@@ -233,7 +234,7 @@ Monster* addToArray(Monster* arr);
 		{
 			if (i != index)
 			{
-				if (character.getPositionX() == monsters[i].getPositionX() && character.getPositionY() == monsters[i].getPositionY())
+				if (character.getPosition().X == monsters[i].getPosition().X && character.getPosition().Y == monsters[i].getPosition().Y)
 				{
 					//take monster out of array
 					monsters = takeMonsterOutOfArray(monsters, i);
@@ -254,7 +255,7 @@ Monster* addToArray(Monster* arr);
 			{
 				if (i != index)
 				{
-					if (character.getPositionX() == monsters[i].getPositionX() && character.getPositionY() == monsters[i].getPositionY())
+					if (character.getPosition().X == monsters[i].getPosition().X && character.getPosition().Y == monsters[i].getPosition().Y)
 					{
 						monsters[i].collidedInTurn = true;
 						character.collidedInTurn = true;

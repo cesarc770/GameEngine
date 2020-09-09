@@ -148,9 +148,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Character.h" />
+    <ClInclude Include="Math\Point2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Character.cpp" />
+    <ClCompile Include="Math\Point2D.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

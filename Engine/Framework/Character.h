@@ -1,4 +1,5 @@
 #pragma once
+#include "../Math/Point2D.h"
 
 namespace Engine
 {
@@ -6,15 +7,13 @@ namespace Engine
 	{
 	public:
 		Character();
-		Character(int x, int y);
+		Character(Point2D &pos);
 
 		//getters and setters
 		void setName(char* n);
 		char* getName();
-		void setPositionX(int x);
-		int getPositionX();
-		void setPositionY(int y);
-		int getPositionY();
+		void setPosition(Point2D &pos);
+		Point2D getPosition();
 
 		//move character
 		void moveUp();
@@ -24,7 +23,8 @@ namespace Engine
 
 	private:
 		char* name;
-		int positionX;
-		int positionY;
+		Point2D position;
+		//int positionX;
+		//int positionY;
 	};
 }
