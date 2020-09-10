@@ -137,7 +137,7 @@ Monster* addToArray(Monster* arr);
 
 			int x = rand() % 100 -50;
 			int y = rand() % 100 -50;
-			Point2D newPos = Point2D(x, y);
+			Point2D newPos(x, y);
 			character.setPosition(newPos);
 
 	}
@@ -234,7 +234,7 @@ Monster* addToArray(Monster* arr);
 		{
 			if (i != index)
 			{
-				if (character.getPosition().X == monsters[i].getPosition().X && character.getPosition().Y == monsters[i].getPosition().Y)
+				if (character.getPosition() == monsters[i].getPosition())
 				{
 					//take monster out of array
 					monsters = takeMonsterOutOfArray(monsters, i);
@@ -255,7 +255,7 @@ Monster* addToArray(Monster* arr);
 			{
 				if (i != index)
 				{
-					if (character.getPosition().X == monsters[i].getPosition().X && character.getPosition().Y == monsters[i].getPosition().Y)
+					if (character.getPosition() == monsters[i].getPosition())
 					{
 						monsters[i].collidedInTurn = true;
 						character.collidedInTurn = true;
